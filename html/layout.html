@@ -5,21 +5,9 @@
   </head>
   <body>
     <p>
-      <!-- To-Do list for user: {{ .User }} //1h18-20m like Jinja, make sure the property is public (capital letter), making it a small letter will make it the variable private -->
+        <!-- {{ .Title }}
+        {{ .Message }} -->
+        <!-- To-Do list for user: {{ .User }} //1h18-20m like Jinja, make sure the property is public (capital letter), making it a small letter will make it the variable private -->
     </p>
-    <table>
-        <tr>
-          <td>Task</td>
-          <td>Done</td>
-      </tr>
-        {{ with .List }}
-          {{ range . }}
-            <tr>
-                  <td>{{ .Name }}</td>
-                  <td>{{ if .Done }}Yes{{ else }}No{{ end }}</td>
-            </tr>
-          {{ end }}
-        {{ end }}
-    </table>
   </body>
 </html>
