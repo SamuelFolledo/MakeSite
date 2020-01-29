@@ -1,11 +1,11 @@
 package main
 
-import (
-	"fmt" //format
+import ( //format
 	"html/template" //allows us to do templating
 	"io/ioutil"
-	"net/http"
-	"oset/http"
+	"os"
+	// "text/template"
+	// "oset/http"
 )
 
 type FileLines struct {
@@ -18,17 +18,23 @@ func main() {
 	if err != nil {
 		panic(err)
 	} else {
-		fmt.Print(line)
+		// fmt.Print(line)
 	}
 
 	// paths := []string{
 	// 	"html/layout.html", //1h24m gotta have a template
 	// }
 
-	// news := FileLines{
-	// 	Title: "EYOOOO", Message: line,
-	// }
-	
+	news := FileLines{
+		"EYOOOO", line,
+	}
+
+	t := template.Must(template.ParseFiles("html/layout.html")) //template loader //1h25m is how it is actually read
+	err = t.Execute(os.Stdout, news)                            //1h26m Stdout prints it in the terminal
+	if err != nil {
+		panic(err)
+	}
+
 	// t := template.ParseFiles("layout.html") //template loader //1h25m is how it is actually read
 	// err = t.Execute(os.Stdout, news)        //1h26m Stdout prints it in the terminal
 	// if err != nil {
