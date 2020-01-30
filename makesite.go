@@ -29,33 +29,20 @@ func main() {
 		"EYOOOO", line,
 	}
 
-	t := template.Must(template.ParseFiles("html/layout.html")) //template loader //1h25m is how it is actually read
-	err = t.Execute(os.Stdout, news)                            //1h26m Stdout prints it in the terminal
-	if err != nil {
-		panic(err)
-	}
-
-	// t := template.ParseFiles("layout.html") //template loader //1h25m is how it is actually read
-	// err = t.Execute(os.Stdout, news)        //1h26m Stdout prints it in the terminal
+	// t := template.Must(template.ParseFiles("html/layout.html")) //template loader //1h25m is how it is actually read
+	// err = t.Execute(os.Stdout, news)                            //1h26m Stdout prints it in the terminal
 	// if err != nil {
 	// 	panic(err)
 	// }
 
-	// tmpl := template.Must(template.ParseFiles("html/layout.html"))
-	// http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-	// 	tmpl.Execute(w, news)
-	// })
-	// http.ListenAndServe(":80", nil)
-
-	// t, err := template.ParseFiles("./html/first.html")
-	// if err == nil {
-	// 	log.Println("Template parsed successfully....")
-	// }
-	// err := templates.ExecuteTemplate(w, "html/first.html", nil)
-	// if err != nil {
-	// 	log.Println("Not Found template")
-	// }
-	// t.Execute(w, news)
+	t, err := template.New("todos").Parse("You have a task titled \"{{ .Title}}\" with message: \"{{ .Message}}\"")
+	if err != nil {
+		panic(err)
+	}
+	err = t.Execute(os.Stdout, news)
+	if err != nil {
+		panic(err)
+	}
 }
 
 func readFile(fileName string) (line string, errorMessage error) { //method that will read a file and return lines or error
