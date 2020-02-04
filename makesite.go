@@ -15,13 +15,40 @@ import ( //format
 type FileLines struct {
 	Title   string //capital means public, small means private
 	Message string
+	Done    bool
+}
+
+type Article struct {
+	Author   string
+	NewsList []FileLines
 }
 
 func main() {
 	line := populateLine()
-	news := FileLines{
-		"EYOOOO", line,
+	// news := FileLines{
+	// 	"EYOOOO", line,
+	// }
+	// printLines(news)
+	paths := []string{
+		"template.tmpl", //1h24m gotta have a template
 	}
+
+	news := []FileLines{
+		FileLines{Title: "Title 1", Message: line, Done: false},
+		FileLines{Title: "Title 2", Message: "MESSAGEE 2", Done: false},
+		FileLines{Title: "Title 3", Message: "MESSAGEEE 3", Done: false},
+	}
+
+	articles := Article{Author: "Kobe", NewsList: news}
+
+	t := template.Must(template.New("template.tmpl").ParseFiles(paths...)) //template loader //1h25m is how it is actually read
+	err := t.Execute(os.Stdout, articles)                                  //1h26m Stdout prints it in the terminal
+	if err != nil {
+		panic(err)
+	}
+}
+
+func printLines(news FileLines) {
 	// t := template.Must(template.ParseFiles("html/layout.html")) //template loader //1h25m is how it is actually read
 	// err = t.Execute(os.Stdout, news)                            //1h26m Stdout prints it in the terminal
 	// if err != nil {
@@ -37,6 +64,7 @@ func main() {
 	}
 	// newNews := FileLines{"Go", "Contribute to any Go project"}
 	// err = t.Execute(os.Stdout, newNews)
+
 }
 
 func populateLine() (line string) {
