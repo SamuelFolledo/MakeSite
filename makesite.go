@@ -7,7 +7,7 @@ import ( //format
 	"io/ioutil"
 	"log"
 	"os"
-	//"reflect" package has TypeOf() which returns the Type of an object
+	//"reflect" //package has TypeOf() which returns the Type of an object
 	// "text/template"
 	// "oset/http"
 )
@@ -18,14 +18,7 @@ type FileLines struct {
 }
 
 func main() {
-	directory := "/Users/macbookpro15/Desktop/MakeSite"
-	fileName := "first-post.txt"
-	file := findFile(fileName, directory)
-	line := ""
-	if file != nil {
-		line = readFile(fileName)
-	}
-
+	line := populateLine()
 	news := FileLines{
 		"EYOOOO", line,
 	}
@@ -34,7 +27,7 @@ func main() {
 	// if err != nil {
 	// 	panic(err)
 	// }
-	t, err := template.New("news").Parse("You have a task titled \"{{ .Title}}\" with message: \"{{ .Message}}\"")
+	t, err := template.New("news").Parse("You have a task titled\n\"{{ .Title}}\"\n\"{{ .Message}}\"")
 	if err != nil {
 		panic(err)
 	}
@@ -42,8 +35,19 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	newNews := FileLines{"Go", "Contribute to any Go project"}
-	err = t.Execute(os.Stdout, newNews)
+	// newNews := FileLines{"Go", "Contribute to any Go project"}
+	// err = t.Execute(os.Stdout, newNews)
+}
+
+func populateLine() (line string) {
+	directory := "/Users/macbookpro15/Desktop/MakeSite"
+	fileName := "sample.txt" //file we will be searching for
+	file := findFile(fileName, directory)
+	line = ""
+	if file != nil {
+		line = readFile(fileName)
+	}
+	return
 }
 
 func findFile(fileName, directory string) (fileResult os.FileInfo) { //func that finds a filename from a directory and returns the file found. //[]os.FileInfo is a slice of interfaces
@@ -52,12 +56,13 @@ func findFile(fileName, directory string) (fileResult os.FileInfo) { //func that
 		log.Fatal(err)
 	}
 	for _, file := range files { //loop through each files
+		// print("File: ", file.Name(), " is ")
 		if file.IsDir() { //skip if file is directory
 			continue
 		}
 		// fmt.Print(file.IsDir(), " = ", file.Name(), "\n")
 		if file.Name() == fileName {
-			println("\n\nFound", fileName)
+			// println("\n\nFound", fileName)
 			fileResult = file
 			return
 		}
