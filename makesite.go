@@ -11,6 +11,10 @@ import ( //format
 	// "oset/http"
 )
 
+var paths = []string{
+	"template.tmpl", //1h24m gotta have a template
+}
+
 type FileLines struct {
 	Title   string //capital means public, small means private
 	Message string
@@ -24,9 +28,6 @@ type Article struct {
 
 func main() {
 	var line = populateLine()
-	var paths = []string{
-		"template.tmpl", //1h24m gotta have a template
-	}
 
 	var news = []FileLines{
 		FileLines{Title: "Title 1", Message: line, Done: true},
@@ -35,27 +36,16 @@ func main() {
 	}
 
 	var articles = Article{Author: "Kobe", NewsList: news}
+	readTmplAndWriteHtml(articles, "template.tmpl", "html/first-post.html")
+}
 
-	var t = template.Must(template.New("template.tmpl").ParseFiles(paths...)) //1) parse files //template loader //1h25m is how it is actually read
-
-	var htmlFile = createFile("first-post.html")
-
-	var err = t.Execute(htmlFile, articles) //3) execute //1h26m Stdout prints it in the terminal
+func readTmplAndWriteHtml(articles Article, tmplName, htmlName string) {
+	var t = template.Must(template.New(tmplName).ParseFiles(paths...)) //1) parse files //template loader //1h25m is how it is actually read
+	var htmlFile = createFile(htmlName)                                //2) Create html file we will be saving to
+	var err = t.Execute(htmlFile, articles)                            //3) execute //1h26m Stdout prints it in the terminal
 	if isError(err) {
 		return
 	}
-
-	// readTmplAndWriteHtml("template.tmpl", "/Users/macbookpro15/Desktop/MakeSite", "first-post.html")
-}
-
-func readTmplAndWriteHtml(tmplName, directory, htmlName string) {
-	file := findFile(tmplName, directory)
-	htmlLine := ""
-	if file != nil {
-		htmlLine = readFile(tmplName)
-	}
-	//after reading the file and assign it to htmlLine... Write file to a .html
-	writeToFile(htmlName, htmlLine)
 }
 
 func writeToFile(fileName, lines string) {
