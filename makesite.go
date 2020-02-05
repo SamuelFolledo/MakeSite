@@ -29,13 +29,11 @@ type Article struct {
 
 // note, that variables are pointers
 var fileFlag = flag.String("file", "", "Name of file")
-var strFlag = flag.String("long-string", "", "Description")
-var boolFlag = flag.Bool("bool", false, "Description of flag")
+var boolFlag = flag.Bool("bool", false, "Description of flag") //bool flag
 
 //init() which gets called before main()
 func init() {
-	flag.StringVar(fileFlag, "", "no file name passed", "Description")
-	flag.StringVar(strFlag, "s", "", "Description") // example of flag, which is better to do in init that main
+	flag.StringVar(fileFlag, "", "no file name passed", "Description") // example of flag, which is better to do in init that main
 }
 
 func main() {
@@ -48,26 +46,8 @@ func main() {
 	var articles = Article{Author: "Kobe", NewsList: news}
 	readTmplAndWriteHtml(articles, "template.tmpl", "html/first-post.html")
 
-	// set flags
-	// flag.Parse()
-	// // flag.Parse()
-	// println("EYOOOO")
-	// println(*strFlag, *boolFlag)
-
-	numbPtr := flag.Int("numb", 42, "an int")
-	boolPtr := flag.Bool("fork", false, "a bool")
-
-	var svar string
-	flag.StringVar(&svar, "svar", "bar", "a string var")
-
-	flag.Parse()
-
-	// fmt.Println("word:", *wordPtr)
-	fmt.Println("file:", *fileFlag)
-	fmt.Println("numb:", *numbPtr)
-	fmt.Println("fork:", *boolPtr)
-	fmt.Println("svar:", svar)
-	fmt.Println("tail:", flag.Args())
+	flag.Parse() //can parse flags
+	fmt.Println("file flag =", *fileFlag)
 }
 
 func readTmplAndWriteHtml(articles Article, tmplName, htmlName string) {
