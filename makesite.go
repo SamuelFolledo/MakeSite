@@ -60,6 +60,7 @@ func createFile(fileName string) (returnedFile *os.File) {
 	var _, err = os.Stat(fileName)
 	// create file if not exists
 	if os.IsNotExist(err) == false { //if file exist, then delete first
+		print(fileName, " exist\n")
 		deleteFile(fileName)
 	}
 	var file, errr = os.Create(fileName)
