@@ -3,9 +3,9 @@ package main
 import ( //format
 	// "html/template" //allows us to do templating
 
+	"fmt"
 	"html/template"
 	"io/ioutil"
-	"log"
 	"os"
 	//"reflect" //package has TypeOf() which returns the Type of an object
 	// "text/template"
@@ -25,16 +25,12 @@ type Article struct {
 
 func main() {
 	line := populateLine()
-	// news := FileLines{
-	// 	"EYOOOO", line,
-	// }
-	// printLines(news)
 	paths := []string{
 		"template.tmpl", //1h24m gotta have a template
 	}
 
 	news := []FileLines{
-		FileLines{Title: "Title 1", Message: line, Done: false},
+		FileLines{Title: "Title 1", Message: line, Done: true},
 		FileLines{Title: "Title 2", Message: "MESSAGEE 2", Done: false},
 		FileLines{Title: "Title 3", Message: "MESSAGEEE 3", Done: false},
 	}
@@ -43,8 +39,28 @@ func main() {
 
 	t := template.Must(template.New("template.tmpl").ParseFiles(paths...)) //template loader //1h25m is how it is actually read
 	err := t.Execute(os.Stdout, articles)                                  //1h26m Stdout prints it in the terminal
-	if err != nil {
-		panic(err)
+	if isError(err) {
+		return
+	}
+
+	readTmplAndWriteHtml("template.tmpl", "/Users/macbookpro15/Desktop/MakeSite", "first-post.html")
+}
+
+func readTmplAndWriteHtml(tmplName, directory, htmlName string) {
+	file := findFile(tmplName, directory)
+	htmlLine := ""
+	if file != nil {
+		htmlLine = readFile(tmplName)
+	}
+	//after reading the file and assign it to htmlLine... Write file to a .html
+	writeToFile(htmlName, htmlLine)
+}
+
+func writeToFile(fileName, lines string) {
+	bytesToWrite := []byte(lines)                         //data written
+	err := ioutil.WriteFile(fileName, bytesToWrite, 0644) //filename, byte array (binary representation), and 0644 which represents permission number. (0-777) //will create a new text file if that text file does not exist yet
+	if isError(err) {
+		return
 	}
 }
 
@@ -54,13 +70,14 @@ func printLines(news FileLines) {
 	// if err != nil {
 	// 	panic(err)
 	// }
-	t, err := template.New("news").Parse("You have a task titled\n\"{{ .Title}}\"\n\"{{ .Message}}\"")
-	if err != nil {
-		panic(err)
+	t, err := template.New("news").Parse("You have a task titled\n\"{{ .Title}}\"\n\"{{ .Message}}\"") //1) Parse files
+	if isError(err) {
+		return
 	}
-	err = t.Execute(os.Stdout, news)
-	if err != nil {
-		panic(err)
+
+	err = t.Execute(os.Stdout, news) //3) Execute and save the parsedFiles to file
+	if isError(err) {
+		return
 	}
 	// newNews := FileLines{"Go", "Contribute to any Go project"}
 	// err = t.Execute(os.Stdout, newNews)
@@ -80,8 +97,8 @@ func populateLine() (line string) {
 
 func findFile(fileName, directory string) (fileResult os.FileInfo) { //func that finds a filename from a directory and returns the file found. //[]os.FileInfo is a slice of interfaces
 	files, err := ioutil.ReadDir(directory) //ReadDir returns a slice of FileInfo structs
-	if err != nil {
-		log.Fatal(err)
+	if isError(err) {
+		return
 	}
 	for _, file := range files { //loop through each files
 		// print("File: ", file.Name(), " is ")
@@ -100,8 +117,8 @@ func findFile(fileName, directory string) (fileResult os.FileInfo) { //func that
 
 func readDirectory(directory string) []os.FileInfo { //method that takes a directory and returns a list of files and directories
 	files, err := ioutil.ReadDir(directory) //ReadDir returns a slice of FileInfo structs
-	if err != nil {
-		log.Fatal(err)
+	if isError(err) {
+		return nil
 	}
 	return files
 }
@@ -109,18 +126,26 @@ func readDirectory(directory string) []os.FileInfo { //method that takes a direc
 func writeFile(fileName, data string) {
 	bytesToWrite := []byte("hello\ngo\n")                       //data written
 	err := ioutil.WriteFile("new-file.txt", bytesToWrite, 0644) //filename, byte array (binary representation), and 0644 which represents permission number. (0-777) //will create a new text file if that text file does not exist yet
-	if err != nil {
-		panic(err)
+	if isError(err) {
+		return
 	}
 	print("Successful at writing file")
 }
 
 func readFile(fileName string) (content string) { //method that will read a file and return lines or error
 	fileContents, err := ioutil.ReadFile(fileName)
-	if err != nil {
-		panic(err)
+	if isError(err) {
+		return
 	}
 	// fmt.Print("READ FILE = \n", string(fileContents))
 	content = string(fileContents)
 	return
+}
+
+func isError(err error) bool { //error helper
+	if err != nil {
+		fmt.Println(err.Error())
+		panic(err)
+	}
+	return (err != nil)
 }
