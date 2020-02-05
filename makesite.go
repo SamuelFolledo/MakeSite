@@ -2,6 +2,7 @@ package main
 
 import ( //format
 	// "html/template" //allows us to do templating
+	"flag"
 	"fmt"
 	"html/template"
 	"io/ioutil"
@@ -26,9 +27,19 @@ type Article struct {
 	NewsList []FileLines
 }
 
+// note, that variables are pointers
+var fileFlag = flag.String("file", "", "Name of file")
+var strFlag = flag.String("long-string", "", "Description")
+var boolFlag = flag.Bool("bool", false, "Description of flag")
+
+//init() which gets called before main()
+func init() {
+	flag.StringVar(fileFlag, "", "no file name passed", "Description")
+	flag.StringVar(strFlag, "s", "", "Description") // example of flag, which is better to do in init that main
+}
+
 func main() {
 	var line = populateLine()
-
 	var news = []FileLines{
 		FileLines{Title: "Title 1", Message: line, Done: true},
 		FileLines{Title: "Title 2", Message: "MESSAGEE 2", Done: false},
@@ -36,6 +47,27 @@ func main() {
 	}
 	var articles = Article{Author: "Kobe", NewsList: news}
 	readTmplAndWriteHtml(articles, "template.tmpl", "html/first-post.html")
+
+	// set flags
+	// flag.Parse()
+	// // flag.Parse()
+	// println("EYOOOO")
+	// println(*strFlag, *boolFlag)
+
+	numbPtr := flag.Int("numb", 42, "an int")
+	boolPtr := flag.Bool("fork", false, "a bool")
+
+	var svar string
+	flag.StringVar(&svar, "svar", "bar", "a string var")
+
+	flag.Parse()
+
+	// fmt.Println("word:", *wordPtr)
+	fmt.Println("file:", *fileFlag)
+	fmt.Println("numb:", *numbPtr)
+	fmt.Println("fork:", *boolPtr)
+	fmt.Println("svar:", svar)
+	fmt.Println("tail:", flag.Args())
 }
 
 func readTmplAndWriteHtml(articles Article, tmplName, htmlName string) {
@@ -58,11 +90,11 @@ func writeToFile(fileName, lines string) {
 func createFile(fileName string) (returnedFile *os.File) {
 	// check if file exists
 	var _, err = os.Stat(fileName)
-	// create file if not exists
-	if os.IsNotExist(err) == false { //if file exist, then delete first
+	if os.IsNotExist(err) == false { //if file exist, then delete file first
 		print(fileName, " exist\n")
 		deleteFile(fileName)
 	}
+	//create file
 	var file, errr = os.Create(fileName)
 	if isError(errr) {
 		return
