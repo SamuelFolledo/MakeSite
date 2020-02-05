@@ -34,7 +34,6 @@ func main() {
 		FileLines{Title: "Title 2", Message: "MESSAGEE 2", Done: false},
 		FileLines{Title: "Title 3", Message: "MESSAGEEE 3", Done: false},
 	}
-
 	var articles = Article{Author: "Kobe", NewsList: news}
 	readTmplAndWriteHtml(articles, "template.tmpl", "html/first-post.html")
 }
@@ -60,14 +59,22 @@ func createFile(fileName string) (returnedFile *os.File) {
 	// check if file exists
 	var _, err = os.Stat(fileName)
 	// create file if not exists
-	if os.IsNotExist(err) {
+	if os.IsNotExist(err) { //if file does not exist, create... else write on it
 		var file, err = os.Create(fileName)
 		if isError(err) {
 			return
 		}
 		returnedFile = file
-		return
+		// return
 		// defer file.Close()
+	} else { //if file exist then delete that file and create
+		deleteFile(fileName)
+		var file, err = os.Create(fileName)
+		if isError(err) {
+			return
+		}
+		returnedFile = file
+
 	}
 	fmt.Println("File Created Successfully", fileName)
 	return
