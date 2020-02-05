@@ -59,23 +59,14 @@ func createFile(fileName string) (returnedFile *os.File) {
 	// check if file exists
 	var _, err = os.Stat(fileName)
 	// create file if not exists
-	if os.IsNotExist(err) { //if file does not exist, create... else write on it
-		var file, err = os.Create(fileName)
-		if isError(err) {
-			return
-		}
-		returnedFile = file
-		// return
-		// defer file.Close()
-	} else { //if file exist then delete that file and create
+	if os.IsNotExist(err) == false { //if file exist, then delete first
 		deleteFile(fileName)
-		var file, err = os.Create(fileName)
-		if isError(err) {
-			return
-		}
-		returnedFile = file
-
 	}
+	var file, errr = os.Create(fileName)
+	if isError(errr) {
+		return
+	}
+	returnedFile = file
 	fmt.Println("File Created Successfully", fileName)
 	return
 }
