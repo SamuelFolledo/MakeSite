@@ -2,7 +2,6 @@ package main
 
 import ( //format
 	// "html/template" //allows us to do templating
-
 	"fmt"
 	"html/template"
 	"io/ioutil"
@@ -24,26 +23,29 @@ type Article struct {
 }
 
 func main() {
-	line := populateLine()
-	paths := []string{
+	var line = populateLine()
+	var paths = []string{
 		"template.tmpl", //1h24m gotta have a template
 	}
 
-	news := []FileLines{
+	var news = []FileLines{
 		FileLines{Title: "Title 1", Message: line, Done: true},
 		FileLines{Title: "Title 2", Message: "MESSAGEE 2", Done: false},
 		FileLines{Title: "Title 3", Message: "MESSAGEEE 3", Done: false},
 	}
 
-	articles := Article{Author: "Kobe", NewsList: news}
+	var articles = Article{Author: "Kobe", NewsList: news}
 
-	t := template.Must(template.New("template.tmpl").ParseFiles(paths...)) //template loader //1h25m is how it is actually read
-	err := t.Execute(os.Stdout, articles)                                  //1h26m Stdout prints it in the terminal
+	var t = template.Must(template.New("template.tmpl").ParseFiles(paths...)) //1) parse files //template loader //1h25m is how it is actually read
+
+	var htmlFile = createFile("first-post.html")
+
+	var err = t.Execute(htmlFile, articles) //3) execute //1h26m Stdout prints it in the terminal
 	if isError(err) {
 		return
 	}
 
-	readTmplAndWriteHtml("template.tmpl", "/Users/macbookpro15/Desktop/MakeSite", "first-post.html")
+	// readTmplAndWriteHtml("template.tmpl", "/Users/macbookpro15/Desktop/MakeSite", "first-post.html")
 }
 
 func readTmplAndWriteHtml(tmplName, directory, htmlName string) {
@@ -62,6 +64,33 @@ func writeToFile(fileName, lines string) {
 	if isError(err) {
 		return
 	}
+}
+
+func createFile(fileName string) (returnedFile *os.File) {
+	// check if file exists
+	var _, err = os.Stat(fileName)
+	// create file if not exists
+	if os.IsNotExist(err) {
+		var file, err = os.Create(fileName)
+		if isError(err) {
+			return
+		}
+		returnedFile = file
+		return
+		// defer file.Close()
+	}
+	fmt.Println("File Created Successfully", fileName)
+	return
+}
+
+func deleteFile(fileName string) {
+	// delete file
+	var err = os.Remove(fileName)
+	if isError(err) {
+		return
+	}
+
+	fmt.Println("File Deleted")
 }
 
 func printLines(news FileLines) {

@@ -6,22 +6,36 @@
 </head>
 <body>
   <p>
-      To-Do list for user: {{ .Author }}
+      To-Do list for user: Kobe
   </p>
   <table>
       <tr>
         <td>Task</td>
         <td>Done</td>
     </tr>
-      {{ with .NewsList }}
-        {{ range . }}
+      
+        
           <tr>
-                <td>{{ .Title }}</td>
-                <td>{{ .Message }}</td>
-                <td>{{ if .Done }}Yes{{ else }}No{{ end }}</td>
+                <td>Title 1</td>
+                <td>Hey I am a text
+
+And I like to test</td>
+                <td>Yes</td>
           </tr>
-        {{ end }}
-      {{ end }}
+        
+          <tr>
+                <td>Title 2</td>
+                <td>MESSAGEE 2</td>
+                <td>No</td>
+          </tr>
+        
+          <tr>
+                <td>Title 3</td>
+                <td>MESSAGEEE 3</td>
+                <td>No</td>
+          </tr>
+        
+      
   </table>
 </body>
 </html>
