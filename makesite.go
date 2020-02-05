@@ -7,6 +7,8 @@ import ( //format
 	"html/template"
 	"io/ioutil"
 	"os"
+	"path/filepath" //to use filepath.Ext(*fileFlag) to trim file extension
+	"strings"
 	//"reflect" //package has TypeOf() which returns the Type of an object
 	// "text/template"
 	// "oset/http"
@@ -37,17 +39,24 @@ func init() {
 }
 
 func main() {
+	saveFileFlag()
+}
+
+// function used to input filename to generate a new HTML file. Example: `latest-post.txt` flag will generate a `latest-post.html`
+func saveFileFlag() {
+	flag.Parse()                                                          //parse flags
+	fmt.Println("File flag =", *fileFlag)                                 //after flag.Parse(), *fileFlag is now user's --file= input
+	var fileName = strings.TrimSuffix(*fileFlag, filepath.Ext(*fileFlag)) //trims the file's extension
+	var htmlFileName = "html/" + fileName + ".html"                       //takes a fileName with no extension and add a .html at the end
+	//create what we will be storing to html file
 	var line = populateLine()
 	var news = []FileLines{
 		FileLines{Title: "Title 1", Message: line, Done: true},
 		FileLines{Title: "Title 2", Message: "MESSAGEE 2", Done: false},
 		FileLines{Title: "Title 3", Message: "MESSAGEEE 3", Done: false},
 	}
-	var articles = Article{Author: "Kobe", NewsList: news}
-	readTmplAndWriteHtml(articles, "template.tmpl", "html/first-post.html")
-
-	flag.Parse() //can parse flags
-	fmt.Println("file flag =", *fileFlag)
+	var articles = Article{Author: "Kobe", NewsList: news}        //contain news to articles variable
+	readTmplAndWriteHtml(articles, "template.tmpl", htmlFileName) //create and save an html file from whatever user named the .txt file
 }
 
 func readTmplAndWriteHtml(articles Article, tmplName, htmlName string) {
