@@ -31,6 +31,7 @@ type Article struct {
 
 // note, that variables are pointers
 var fileFlag = flag.String("file", "", "Name of file")
+var dirFlag = flag.String("dir", "", "Name of directory")
 var boolFlag = flag.Bool("bool", false, "Description of flag") //bool flag
 
 //init() which gets called before main()
@@ -39,7 +40,29 @@ func init() {
 }
 
 func main() {
-	saveFileFlag()
+	// saveFileFlag()
+	directoryFlag()
+}
+
+//method that takes a directory as a flag and find files inside that directory
+func directoryFlag() {
+	flag.Parse()                              //parse flags
+	fmt.Println("Directory flag =", *dirFlag) //after flag.Parse(), *fileFlag is now user's --file= input
+
+	files, err := ioutil.ReadDir(*dirFlag) //ReadDir returns a slice of FileInfo structs
+	if isError(err) {
+		return
+	}
+	for _, file := range files { //loop through each files
+		// print("File: ", file.Name(), "\n")
+		if file.IsDir() { //skip if file is directory
+			continue
+		}
+		if filepath.Ext(strings.TrimSpace(file.Name())) == ".txt" { //gets the file extension from file name
+			print("File: ", file.Name(), "\n")
+		}
+	}
+	return
 }
 
 // function used to input filename to generate a new HTML file. Example: `latest-post.txt` flag will generate a `latest-post.html`
@@ -59,10 +82,10 @@ func saveFileFlag() {
 	readTmplAndWriteHtml(articles, "template.tmpl", htmlFileName) //create and save an html file from whatever user named the .txt file
 }
 
-func readTmplAndWriteHtml(articles Article, tmplName, htmlName string) {
+func readTmplAndWriteHtml(parsedData Article, tmplName, htmlName string) {
 	var t = template.Must(template.New(tmplName).ParseFiles(paths...)) //1) parse files //template loader //1h25m is how it is actually read
 	var htmlFile = createFile(htmlName)                                //2) Create html file we will be saving to
-	var err = t.Execute(htmlFile, articles)                            //3) execute //1h26m Stdout prints it in the terminal
+	var err = t.Execute(htmlFile, parsedData)                          //3) execute //1h26m Stdout prints it in the terminal
 	if isError(err) {
 		return
 	}
@@ -94,33 +117,22 @@ func createFile(fileName string) (returnedFile *os.File) {
 }
 
 func deleteFile(fileName string) {
-	// delete file
 	var err = os.Remove(fileName)
 	if isError(err) {
 		return
 	}
-
 	fmt.Println("File Deleted")
 }
 
 func printLines(news FileLines) {
-	// t := template.Must(template.ParseFiles("html/layout.html")) //template loader //1h25m is how it is actually read
-	// err = t.Execute(os.Stdout, news)                            //1h26m Stdout prints it in the terminal
-	// if err != nil {
-	// 	panic(err)
-	// }
 	t, err := template.New("news").Parse("You have a task titled\n\"{{ .Title}}\"\n\"{{ .Message}}\"") //1) Parse files
 	if isError(err) {
 		return
 	}
-
 	err = t.Execute(os.Stdout, news) //3) Execute and save the parsedFiles to file
 	if isError(err) {
 		return
 	}
-	// newNews := FileLines{"Go", "Contribute to any Go project"}
-	// err = t.Execute(os.Stdout, newNews)
-
 }
 
 func populateLine() (line string) {
