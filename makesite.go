@@ -48,8 +48,7 @@ func main() {
 func directoryFlag() {
 	flag.Parse()                              //parse flags
 	fmt.Println("Directory flag =", *dirFlag) //after flag.Parse(), *fileFlag is now user's --file= input
-
-	files, err := ioutil.ReadDir(*dirFlag) //ReadDir returns a slice of FileInfo structs
+	files, err := ioutil.ReadDir(*dirFlag)    //ReadDir returns a slice of FileInfo structs
 	if isError(err) {
 		return
 	}
@@ -60,9 +59,18 @@ func directoryFlag() {
 		}
 		if filepath.Ext(strings.TrimSpace(file.Name())) == ".txt" { //gets the file extension from file name
 			print("File: ", file.Name(), "\n")
+			textFileToHtml(file.Name())
 		}
 	}
 	return
+}
+
+//function that reads a text file from a directory and writes an html version of it using a GO template
+func textFileToHtml(fileName string) {
+	var fileContents = readFile(("texts/" + fileName))
+	var trimmedFileName = strings.TrimSuffix(fileName, filepath.Ext(fileName)) //trims the fileName's extension
+	var htmlFileName = "html/" + trimmedFileName + ".html"                     //create the directory and name of the html file
+	writeToFile(htmlFileName, fileContents)
 }
 
 // function used to input filename to generate a new HTML file. Example: `latest-post.txt` flag will generate a `latest-post.html`
@@ -99,6 +107,7 @@ func writeToFile(fileName, lines string) {
 	}
 }
 
+//function that takes a fileName and extension and returns the file created
 func createFile(fileName string) (returnedFile *os.File) {
 	// check if file exists
 	var _, err = os.Stat(fileName)
@@ -137,7 +146,7 @@ func printLines(news FileLines) {
 
 func populateLine() (line string) {
 	directory := "/Users/macbookpro15/Desktop/MakeSite"
-	fileName := "sample.txt" //file we will be searching for
+	fileName := "texts/sample.txt" //file we will be searching for
 	file := findFile(fileName, directory)
 	line = ""
 	if file != nil {
