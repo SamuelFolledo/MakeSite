@@ -49,14 +49,41 @@ func init() {
 }
 
 func main() {
-	// saveFileFlag()
-	// directoryFlag()
-	// listSupportedLanguages() //needs parameters IDK yet
 	var translatedText, err = translateText("es", "I love you")
 	if isError(err) {
 		return
 	}
-	print("TRANSLATED TEXT = ", translatedText)
+	print("\"I love you\" in SPANISH is \"", translatedText, "\"\n")
+
+	var tagalogText, err2 = translateText("tl", "I love you too")
+	if isError(err2) {
+		return
+	}
+	print("\"I love you too\" in TAGALOG is \"", tagalogText, "\"")
+}
+
+//function that takes a text to translate and language to translate to and returns an error or the translatedText
+func translateText(targetLanguage, text string) (string, error) {
+	ctx := context.Background()
+	lang, err := language.Parse(targetLanguage)
+	if err != nil {
+		return "", fmt.Errorf("language.Parse: %v", err)
+	}
+
+	client, err := translate.NewClient(ctx)
+	if err != nil {
+		return "", err
+	}
+	defer client.Close()
+
+	resp, err := client.Translate(ctx, []string{text}, lang, nil)
+	if err != nil {
+		return "", fmt.Errorf("Translate: %v", err)
+	}
+	if len(resp) == 0 {
+		return "", fmt.Errorf("Translate returned empty response to text: %s", text)
+	}
+	return resp[0].Text, nil
 }
 
 //Sample code implemented in: https://cloud.google.com/storage/docs/reference/libraries
@@ -86,31 +113,6 @@ func translationOverView() { //this code is only ran once in the beginning set u
 	}
 
 	fmt.Printf("Bucket %v created.\n", bucketName)
-}
-
-func translateText(targetLanguage, text string) (string, error) {
-	// text := "The Go Gopher is cute"
-	ctx := context.Background()
-
-	lang, err := language.Parse(targetLanguage)
-	if err != nil {
-		return "", fmt.Errorf("language.Parse: %v", err)
-	}
-
-	client, err := translate.NewClient(ctx)
-	if err != nil {
-		return "", err
-	}
-	defer client.Close()
-
-	resp, err := client.Translate(ctx, []string{text}, lang, nil)
-	if err != nil {
-		return "", fmt.Errorf("Translate: %v", err)
-	}
-	if len(resp) == 0 {
-		return "", fmt.Errorf("Translate returned empty response to text: %s", text)
-	}
-	return resp[0].Text, nil
 }
 
 func listSupportedLanguages(w io.Writer, targetLanguage string) error {
