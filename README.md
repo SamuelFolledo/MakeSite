@@ -94,7 +94,7 @@ If you get stuck on any step, be sure to print the output to `stdout`!
     - [ ] Parse Markdown (`.md`) files and transform them into HTML. `#` through `######` should translate to `<h1>` through `<h6>` elements.
     - [ ] **_FILL IN THE BLANK_**: `I will use the __________________________________ library. The documentation is located at __________________________________. My goal is to use it to __________________________________.`
     - [X] I used __Google Cloud Translation__ library. The documentation is located at [Cloud Translation API](https://console.cloud.google.com/apis/library/translate.googleapis.com?q=translation&project=go-makesite&folder&organizationId), [GitHub googleapis](https://github.com/googleapis/google-cloud-go/blob/master/translate/translate.go), and [pkg.go.dev](https://pkg.go.dev/cloud.google.com/go/translate/apiv3?tab=doc). My goal is to use it to translate any strings to whatever language I want to support.
-- [ ] **Add, commit, and push to GitHub**.
+- [X] **Add, commit, and push to GitHub**.
 
 ## Resources
 
