@@ -88,11 +88,12 @@ If you get stuck on any step, be sure to print the output to `stdout`!
 
 #### v1.2 Requirements
 
-- [ ] Initialize Go modules in your project.
-- [ ] Add any third party library to your project to enhance it's functionality. Some ideas you might consider include **_(CHOOSE ONLY ONE)_**:
-    - [ ] Translating page content using Google Translate.
+- [X] Initialize Go modules in your project.
+- [X] Add any third party library to your project to enhance it's functionality. Some ideas you might consider include **_(CHOOSE ONLY ONE)_**:
+    - [X] Translating page content using Google Translate.
     - [ ] Parse Markdown (`.md`) files and transform them into HTML. `#` through `######` should translate to `<h1>` through `<h6>` elements.
     - [ ] **_FILL IN THE BLANK_**: `I will use the __________________________________ library. The documentation is located at __________________________________. My goal is to use it to __________________________________.`
+    - [X] I used __Google Cloud Translation__ library. The documentation is located at [Cloud Translation API](https://console.cloud.google.com/apis/library/translate.googleapis.com?q=translation&project=go-makesite&folder&organizationId), [GitHub googleapis](https://github.com/googleapis/google-cloud-go/blob/master/translate/translate.go), and [pkg.go.dev](https://pkg.go.dev/cloud.google.com/go/translate/apiv3?tab=doc). My goal is to use it to translate any strings to whatever language I want to support.
 - [ ] **Add, commit, and push to GitHub**.
 
 ## Resources

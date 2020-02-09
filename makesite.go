@@ -51,17 +51,16 @@ func init() {
 func main() {
 	// saveFileFlag()
 	// directoryFlag()
-	// listSupportedLanguages()
-	// var translatedText, err = translateText("es", "I love you")
-	// if isError(err) {
-	// 	return
-	// }
-	// print("TRANSLATED TEXT = ", translatedText)
-	translationOverView()
+	// listSupportedLanguages() //needs parameters IDK yet
+	var translatedText, err = translateText("es", "I love you")
+	if isError(err) {
+		return
+	}
+	print("TRANSLATED TEXT = ", translatedText)
 }
 
 //Sample code implemented in: https://cloud.google.com/storage/docs/reference/libraries
-func translationOverView() {
+func translationOverView() { //this code is only ran once in the beginning set up
 	ctx := context.Background()
 
 	// Sets your Google Cloud Platform project ID.
