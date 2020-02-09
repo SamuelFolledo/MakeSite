@@ -2,16 +2,25 @@ package main
 
 import ( //format
 	// "html/template" //allows us to do templating
+	"context"
 	"flag"
 	"fmt"
 	"html/template"
+	"io"
 	"io/ioutil"
+	"log"
 	"os"
 	"path/filepath" //to use filepath.Ext(*fileFlag) to trim file extension
 	"strings"
+
 	//"reflect" //package has TypeOf() which returns the Type of an object
 	// "text/template"
 	// "oset/http"
+	"time"
+
+	"cloud.google.com/go/storage"
+	"cloud.google.com/go/translate"
+	"golang.org/x/text/language"
 )
 
 var paths = []string{
@@ -41,7 +50,95 @@ func init() {
 
 func main() {
 	// saveFileFlag()
-	directoryFlag()
+	// directoryFlag()
+	// listSupportedLanguages()
+	// var translatedText, err = translateText("es", "I love you")
+	// if isError(err) {
+	// 	return
+	// }
+	// print("TRANSLATED TEXT = ", translatedText)
+	translationOverView()
+}
+
+//Sample code implemented in: https://cloud.google.com/storage/docs/reference/libraries
+func translationOverView() {
+	ctx := context.Background()
+
+	// Sets your Google Cloud Platform project ID.
+	projectID := "go-makesite" //projectID from .json file
+
+	// Creates a client.
+	client, err := storage.NewClient(ctx)
+	if err != nil {
+		log.Fatalf("Failed to create client: %v", err)
+	}
+
+	// Sets the name for the new bucket.
+	bucketName := "samuel-new-bucket" //bucket name must not have capital letter
+
+	// Creates a Bucket instance.
+	bucket := client.Bucket(bucketName)
+
+	// Creates the new bucket.
+	ctx, cancel := context.WithTimeout(ctx, time.Second*10)
+	defer cancel()
+	if err := bucket.Create(ctx, projectID, nil); err != nil {
+		log.Fatalf("Failed to create bucket: %v", err)
+	}
+
+	fmt.Printf("Bucket %v created.\n", bucketName)
+}
+
+func translateText(targetLanguage, text string) (string, error) {
+	// text := "The Go Gopher is cute"
+	ctx := context.Background()
+
+	lang, err := language.Parse(targetLanguage)
+	if err != nil {
+		return "", fmt.Errorf("language.Parse: %v", err)
+	}
+
+	client, err := translate.NewClient(ctx)
+	if err != nil {
+		return "", err
+	}
+	defer client.Close()
+
+	resp, err := client.Translate(ctx, []string{text}, lang, nil)
+	if err != nil {
+		return "", fmt.Errorf("Translate: %v", err)
+	}
+	if len(resp) == 0 {
+		return "", fmt.Errorf("Translate returned empty response to text: %s", text)
+	}
+	return resp[0].Text, nil
+}
+
+func listSupportedLanguages(w io.Writer, targetLanguage string) error {
+	// targetLanguage := "th"
+	ctx := context.Background()
+
+	lang, err := language.Parse(targetLanguage)
+	if err != nil {
+		return fmt.Errorf("language.Parse: %v", err)
+	}
+
+	client, err := translate.NewClient(ctx)
+	if err != nil {
+		return fmt.Errorf("translate.NewClient: %v", err)
+	}
+	defer client.Close()
+
+	langs, err := client.SupportedLanguages(ctx, lang)
+	if err != nil {
+		return fmt.Errorf("SupportedLanguages: %v", err)
+	}
+
+	for _, lang := range langs {
+		fmt.Fprintf(w, "%q: %s\n", lang.Tag, lang.Name)
+	}
+
+	return nil
 }
 
 //method that takes a directory as a flag and find files inside that directory
