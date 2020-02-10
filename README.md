@@ -11,21 +11,29 @@ _Create your own custom Static Site Generator (like [Jekyll](https://jekyllrb.co
 ### 📚 Table of Contents
 
 1. [Demo](#demo)
-    - [MVP and v1.1 Requirements](#mvp)
-    - [Third Party API: Google Cloud Translator](#api)
+    - [MVP and v1.1 Requirements](#mvp-and-v1.1)
+    - [Third Party API: Google Cloud Translator](#api-translator)
 2. [Project Structure](#project-structure)
 3. [Getting Started](#getting-started)
 4. [Deliverables](#deliverables)
 5. [Resources](#resources)
 
 ## Demo
-<a name="mvp"></a>
+<a name="mvp-and-v1.1"></a>
 ### MVP and v1.1 Requirements
+- Takes a directory as a flag
+- Read contents of text files only inside the directory
+- Create an HTML file with the same name as the text file found
+- Populate HTML file with codes needed using a [Go Template](template.tmpl)
 <img src="https://github.com/SamuelFolledo/MakeSite/blob/master/static/gifs/flagDirOfTextsToHtml.gif" width="1000" height="712">
 
-<a name="api"></a>
-### Third Party API: Google Cloud Translator]
+------
+
+<a name="api-translator"></a>
+### Third Party API: Google Cloud Translator
 <img src="https://github.com/SamuelFolledo/MakeSite/blob/master/static/gifs/flagDirOfTextsToHtml.gif" width="1000" height="712">
+
+------
 
 ## Project Structure
 
