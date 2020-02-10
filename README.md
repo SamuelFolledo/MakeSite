@@ -19,9 +19,13 @@ _Create your own custom Static Site Generator (like [Jekyll](https://jekyllrb.co
 5. [Resources](#resources)
 
 ## Demo
-### MVP and v1.1 Requirements(#mvp)
-### Third Party API: Google Cloud Translator](#api)
+<a name="mvp"></a>
+### MVP and v1.1 Requirements
+<img src="https://github.com/SamuelFolledo/MakeSite/blob/master/static/gifs/flagDirOfTextsToHtml.gif" width="640" height="456">
 
+<a name="api"></a>
+### Third Party API: Google Cloud Translator]
+<img src="https://github.com/SamuelFolledo/MakeSite/blob/master/static/gifs/flagDirOfTextsToHtml.gif" width="640" height="456">
 
 ## Project Structure
 
