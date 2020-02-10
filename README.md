@@ -5,7 +5,7 @@
 _Create your own custom Static Site Generator (like [Jekyll](https://jekyllrb.com/) or [Hugo](https://gohugo.io/)) by cloning and fulfilling the requirements in this repo!_
 
 <p align="center">
-  <img width="460" height="460" src="https://github.com/SamuelFolledo/MakeSite/blob/master/static/myGopher.png">
+  <img width="230" height="230" src="https://github.com/SamuelFolledo/MakeSite/blob/master/static/myGopher.png">
 </p>
 
 ### 📚 Table of Contents
