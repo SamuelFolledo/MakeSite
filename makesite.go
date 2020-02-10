@@ -49,17 +49,25 @@ func init() {
 }
 
 func main() {
-	var translatedText, err = translateText("es", "I love you")
+	// saveFileFlag()
+	// directoryFlag()
+	implementTranslationAPI()
+}
+
+//method that runs my implementation of Google Cloud Translation API
+func implementTranslationAPI() {
+	var text = "Login Error"
+	var translatedText, err = translateText("es", text) //translate to Spanish
 	if isError(err) {
 		return
 	}
-	print("\"I love you\" in SPANISH is \"", translatedText, "\"\n")
+	print("\"", text, "\" in SPANISH is \"", translatedText, "\"\n")
 
-	var tagalogText, err2 = translateText("tl", "I love you too")
+	var tagalogText, err2 = translateText("tl", text) //translate to Tagalog
 	if isError(err2) {
 		return
 	}
-	print("\"I love you too\" in TAGALOG is \"", tagalogText, "\"")
+	print("\"", text, "\" in TAGALOG is \"", tagalogText, "\"")
 }
 
 //function that takes a text to translate and language to translate to and returns an error or the translatedText
@@ -87,7 +95,7 @@ func translateText(targetLanguage, text string) (string, error) {
 }
 
 //Sample code implemented in: https://cloud.google.com/storage/docs/reference/libraries
-func translationOverView() { //this code is only ran once in the beginning set up
+func translationOverView() { //run this code once in the beginning of translation to create a new bucket
 	ctx := context.Background()
 
 	// Sets your Google Cloud Platform project ID.
@@ -165,10 +173,22 @@ func directoryFlag() {
 
 //function that reads a text file from a directory and writes an html version of it using a GO template
 func textFileToHtml(fileName string) {
-	var fileContents = readFile(("texts/" + fileName))
+	//1) Get the text of the file passed, and HTML file name
+	var fileContents = readFile(("./texts/" + fileName))                       //get the contents of the file
 	var trimmedFileName = strings.TrimSuffix(fileName, filepath.Ext(fileName)) //trims the fileName's extension
-	var htmlFileName = "html/" + trimmedFileName + ".html"                     //create the directory and name of the html file
-	writeToFile(htmlFileName, fileContents)
+	var htmlFileName = "./html/" + trimmedFileName + ".html"                   //create the directory and name of the html file
+	//2) Get the struct data we will store
+	var news = []FileLines{
+		FileLines{Title: fileName, Message: fileContents, Done: false},
+	}
+	var articles = Article{Author: "Samuel", NewsList: news} //contain news to articles variable
+	//3) Create the HTML file, parse and execute the template with our data
+	var htmlFile = createFile(htmlFileName)
+	var t = template.Must(template.New("template.tmpl").ParseFiles(paths...))
+	var err = t.Execute(htmlFile, articles)
+	if isError(err) {
+		return
+	}
 }
 
 // function used to input filename to generate a new HTML file. Example: `latest-post.txt` flag will generate a `latest-post.html`
