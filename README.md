@@ -31,7 +31,31 @@ _Create your own custom Static Site Generator (like [Jekyll](https://jekyllrb.co
 
 <a name="api-translator"></a>
 ### Third Party API: Google Cloud Translator
-<img src="https://github.com/SamuelFolledo/MakeSite/blob/master/static/gifs/flagDirOfTextsToHtml.gif" width="1000" height="712">
+##### To Setup
+    1. Fork or download this project
+    2. Follow basic setup [instructions](https://cloud.google.com/translate/docs/basic/setup-basic)
+        - [ ] Create or select a project
+        - [ ] Enable the Cloud Translation API for this project
+        - [ ] Download a private key as JSON
+    3. Install the Cloud Translation - [Basic client library](https://cloud.google.com/translate/docs/reference/libraries/v2/go)
+        ```
+        go get -u cloud.google.com/go/translate
+        ```
+#### To Run
+    1. __Important:__ Run this command __once__ each time the project starts to set the environment variable. Replace the ```[PATH]``` to the path of the ```.json``` file downloaded from setup 2 step 3. [Instructions](https://cloud.google.com/docs/authentication/production) for more info or for Windows setup
+        ```
+        export GOOGLE_APPLICATION_CREDENTIALS="[PATH]"
+        ```
+        For example:
+        ```
+        export GOOGLE_APPLICATION_CREDENTIALS="/home/user/Downloads/[FILE_NAME].json"
+        ```
+    2. Once ```export...``` command is done, run the app with this command
+        ```
+        go build && ./makesite
+        ```
+
+<img src="https://github.com/SamuelFolledo/MakeSite/blob/master/static/gifs/googleCloudTranslationDemo.gif" width="1000" height="712">
 
 ------
 
@@ -121,6 +145,8 @@ If you get stuck on any step, be sure to print the output to `stdout`!
 - [X] **Add, commit, and push to GitHub**.
 
 ## Resources
+- [Google Cloud Translation Reference](https://cloud.google.com/translate/docs/apis)
+- [Setting the environment variable](https://cloud.google.com/docs/authentication/production)
 
 ### Lesson Plans
 
