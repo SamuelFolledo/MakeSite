@@ -4,12 +4,24 @@
 
 _Create your own custom Static Site Generator (like [Jekyll](https://jekyllrb.com/) or [Hugo](https://gohugo.io/)) by cloning and fulfilling the requirements in this repo!_
 
+<p align="center">
+  <img width="460" height="460" src="https://github.com/SamuelFolledo/MakeSite/blob/master/static/myGopher.png">
+</p>
+
 ### 📚 Table of Contents
 
-1. [Project Structure](#project-structure)
-2. [Getting Started](#getting-started)
-3. [Deliverables](#deliverables)
-4. [Resources](#resources)
+1. [Demo](#demo)
+    - [MVP and v1.1 Requirements](#mvp)
+    - [Third Party API: Google Cloud Translator](#api)
+2. [Project Structure](#project-structure)
+3. [Getting Started](#getting-started)
+4. [Deliverables](#deliverables)
+5. [Resources](#resources)
+
+## Demo
+### MVP and v1.1 Requirements(#mvp)
+### Third Party API: Google Cloud Translator](#api)
+
 
 ## Project Structure
 
