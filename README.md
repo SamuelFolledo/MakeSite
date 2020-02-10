@@ -21,11 +21,11 @@ _Create your own custom Static Site Generator (like [Jekyll](https://jekyllrb.co
 ## Demo
 <a name="mvp"></a>
 ### MVP and v1.1 Requirements
-<img src="https://github.com/SamuelFolledo/MakeSite/blob/master/static/gifs/flagDirOfTextsToHtml.gif" width="640" height="456">
+<img src="https://github.com/SamuelFolledo/MakeSite/blob/master/static/gifs/flagDirOfTextsToHtml.gif" width="1000" height="712">
 
 <a name="api"></a>
 ### Third Party API: Google Cloud Translator]
-<img src="https://github.com/SamuelFolledo/MakeSite/blob/master/static/gifs/flagDirOfTextsToHtml.gif" width="640" height="456">
+<img src="https://github.com/SamuelFolledo/MakeSite/blob/master/static/gifs/flagDirOfTextsToHtml.gif" width="1000" height="712">
 
 ## Project Structure
 
