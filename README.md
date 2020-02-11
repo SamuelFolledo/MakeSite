@@ -160,3 +160,15 @@ If you get stuck on any step, be sure to print the output to `stdout`!
 - [**Go By Example**: Panic](https://gobyexample.com/panic)
 - [**GopherAcademy**: Using Go Templates](https://blog.gopheracademy.com/advent-2017/using-go-templates/)
 - [**rapid7.com**: Building a Simple CLI Tool with Golang](https://blog.rapid7.com/2016/08/04/build-a-simple-cli-tool-with-golang/)
+
+## Tips
+- __Run commands from a .sh file__
+    1. create a ```.sh``` file
+    2. run this in the terminal at first, once after creating the ```.sh``` file
+        ```
+        $ chmod +x fileName.sh
+        ```
+    3. now to run the file simply type this
+        ```
+        ./run.sh
+        ```
